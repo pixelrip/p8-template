@@ -6,6 +6,7 @@ The project is meant to serve as a well structured project starting point for a 
 
 1. **Pico-8** - Install from [lexaloffle.com](https://www.lexaloffle.com/pico-8.php)
 2. **Python 3.4+** - Required for picotool
+3. **picotool** - Install from [GitHub](https://github.com/dansanderson/picotool)
 3. **Git** (recommended) - For version control
 
 ## Project Structure
