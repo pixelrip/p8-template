@@ -16,18 +16,18 @@ echo "Building development version..."
 p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
-    --gfx $ASSETS_DIR/sprites.p8.png \
-    --sfx $ASSETS_DIR/audio.p8.png \
-    --music $ASSETS_DIR/audio.p8.png
+    --gfx $ASSETS_DIR/sprites.p8 \
+    --sfx $ASSETS_DIR/audio.p8 \
+    --music $ASSETS_DIR/audio.p8
 
 echo "Building production version..."
 # Production build - using actual assets with minification
 p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
-    --gfx $ASSETS_DIR/sprites.p8.png \
-    --sfx $ASSETS_DIR/audio.p8.png \
-    --music $ASSETS_DIR/audio.p8.png \
+    --gfx $ASSETS_DIR/sprites.p8 \
+    --sfx $ASSETS_DIR/audio.p8 \
+    --music $ASSETS_DIR/audio.p8 \
     --lua-minify \
     --keep-names-from-file=config/preserve_names.txt
 
