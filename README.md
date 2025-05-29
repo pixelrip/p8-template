@@ -34,4 +34,8 @@ project/
 
 ## Workflow
 
-Edit sprites in 
+- Edit sprites in `assets/sprites.p8`
+- Edit audio (sfx and patterns) in `assets/audio.p8`
+- Build the project with `./scripts/build.sh`
+- Load and run the compiled file in Pico-8
+
