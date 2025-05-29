@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="my-game"
+PROJECT_NAME="boilerplate"  # Matches your current setup
 SRC_DIR="src"
 ASSETS_DIR="assets"
 BUILD_DIR="build"
@@ -8,17 +8,23 @@ BUILD_DIR="build"
 # Create build directories
 mkdir -p $BUILD_DIR/dev $BUILD_DIR/prod
 
-# Development build
-p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8.png \
+# Set the Lua path for require() to work
+LUA_PATH="?;?.lua;src/?;src/?.lua;src/?/init.lua"
+
+echo "Building development version..."
+# Development build - using actual assets
+p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8 \
     --lua $SRC_DIR/main.lua \
+    --lua-path="$LUA_PATH" \
     --gfx $ASSETS_DIR/sprites.p8.png \
     --sfx $ASSETS_DIR/audio.p8.png \
-    --music $ASSETS_DIR/audio.p8.png \
-    --lua-format
+    --music $ASSETS_DIR/audio.p8.png
 
-# Production build
-p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8.png \
+echo "Building production version..."
+# Production build - using actual assets
+p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 \
     --lua $SRC_DIR/main.lua \
+    --lua-path="$LUA_PATH" \
     --gfx $ASSETS_DIR/sprites.p8.png \
     --sfx $ASSETS_DIR/audio.p8.png \
     --music $ASSETS_DIR/audio.p8.png \
@@ -26,10 +32,19 @@ p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8.png \
     --keep-names-from-file=config/preserve_names.txt
 
 # Copy final distribution
-cp $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8.png ${PROJECT_NAME}.p8.png
+cp $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 ${PROJECT_NAME}.p8
 
 echo "Build complete!"
-p8tool stats ${PROJECT_NAME}.p8.png
+echo "Development build: $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8"
+echo "Production build: $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8"
+echo "Final cart: ${PROJECT_NAME}.p8"
+
+# Try to show stats if the file exists
+if [ -f "${PROJECT_NAME}.p8" ]; then
+    p8tool stats ${PROJECT_NAME}.p8
+else
+    echo "Warning: Final cart file not created"
+fi
 
 
 # Troubleshooting:
