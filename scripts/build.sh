@@ -12,7 +12,7 @@ mkdir -p $BUILD_DIR/dev $BUILD_DIR/prod
 LUA_PATH="?;?.lua;src/?;src/?.lua;src/?/init.lua"
 
 echo "Building development version..."
-# Development build - using actual assets
+# Development build - using actual assets with proper p8tool flags
 p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
@@ -21,7 +21,7 @@ p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8 \
     --music $ASSETS_DIR/audio.p8.png
 
 echo "Building production version..."
-# Production build - using actual assets
+# Production build - using actual assets with minification
 p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
@@ -39,7 +39,7 @@ echo "Development build: $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8"
 echo "Production build: $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8"
 echo "Final cart: ${PROJECT_NAME}.p8"
 
-# Try to show stats if the file exists
+# Show stats for the final cartridge
 if [ -f "${PROJECT_NAME}.p8" ]; then
     p8tool stats ${PROJECT_NAME}.p8
 else
