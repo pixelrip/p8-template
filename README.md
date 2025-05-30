@@ -23,7 +23,8 @@ project/
 │   ├── entities/          # Game objects (empty - add your entities)
 │   ├── states/            # Game states
 │   │   └── title.lua      # Title screen example
-│   ├── systems/           # Game systems (empty - add your systems)
+│   ├── systems/           # Game systems
+│   │   └── collision.lua  # Collision detection
 │   └── utils/
 │       └── log.lua        # Logging utility
 ├── assets/                # Separate .p8 files for graphics/audio
@@ -57,6 +58,9 @@ Simple state management system. [Documentation](docs/api/game-state.md)
 
 ### Input Manager
 Advanced input handling with cooldowns and patterns. [Documentation](docs/api/input-manager.md)
+
+### Collision System
+Basic collision detection with extension points. [Documentation](docs/api/collision.md)
 
 ### Constants System
 Centralized configuration using flat naming. [Documentation](docs/api/constants.md)

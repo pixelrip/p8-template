@@ -176,38 +176,60 @@ local bj=bh+1
 return self.y[bj][bi]
 end
 end
+a.c["systems/collision"]=function()
+bz={}
+function bz.ca(cb,cc,cd,ce,cf,cg)
+return cb>=cd and cb<cd+cf and
+cc>=ce and cc<ce+cg
+end
+function bz.ch(ci,cj,ck,cl,cm,cn,co,cp)
+return ci<cm+co and cm<ci+ck and
+cj<cn+cp and cn<cj+cl
+end
+function bz.cq(ci,cj,cr,cm,cn,cs)
+local ct,cu=cm-ci,cn-cj
+local cv=ct*ct+cu*cu
+local cw=(cr+cs)*(cr+cs)
+return cv<=cw
+end
+function bz.cx(cy,cz)
+return bz.ch(cy.da,cy.db,cy.dc,cy.dd,
+cz.da,cz.db,cz.dc,cz.dd)
+end
+end
 a.c["states/title"]=function()
-bz=h:i()
-function bz:k()
+de=h:i()
+function de:k()
 f("Entering Title State")
 music(0)
 end
-function bz:l()
+function de:l()
 end
-function bz:m()
+function de:m()
 cls()
 print("boilerplate",42,60,7)
 sspr(8,0,15,11,57,80)
 end
-function bz:n()
+function de:n()
 f("Exiting Title State")
 end
 end
-function ca(bd)
-local cb=a.b
-if(cb[bd]==nil) cb[bd]=a.c[bd]()
-if(cb[bd]==nil) cb[bd]=true
-return cb[bd]
+function df(bd)
+local dg=a.b
+if(dg[bd]==nil) dg[bd]=a.c[bd]()
+if(dg[bd]==nil) dg[bd]=true
+return dg[bd]
 end
-ca("config/constants")
-ca("utils/log")
-ca("core/game-state")
-ca("core/input-manager")
-ca("states/title")
+df("config/constants")
+df("utils/log")
+df("core/game-state")
+df("core/input-manager")
+df("systems/collision")
+df("states/title")
 function _init()
 f("=== Game Started ===")
 v:k()
-o:add("title",bz)
+o:add("title",de)
 o:u("title")
 end
 function _update()

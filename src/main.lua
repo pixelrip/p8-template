@@ -5,6 +5,8 @@ require("utils/log")
 require("core/game-state")
 require("core/input-manager")
 
+require("systems/collision")
+
 require("states/title")
 
 -- Main entry point for the game
