@@ -8,6 +8,7 @@ require("core/input-manager")
 
 require("systems/collision")
 require("systems/timer")
+require("systems/camera")
 
 require("states/title")
 
@@ -31,6 +32,9 @@ function _update()
     
     -- Update timer system
     timer:update()
+    
+    -- Update camera system
+    cam:update()
     
     -- Update current game state
     gs:update()

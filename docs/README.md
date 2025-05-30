@@ -11,6 +11,7 @@
 - [Input Manager](api/input-manager.md) - Button handling and patterns
 - [Collision System](api/collision.md) - Basic collision detection
 - [Timer System](api/timer.md) - Timing and animation system
+- [Camera System](api/camera.md) - Simple camera control
 - [Math Utilities](api/math.md) - Essential 2D game math
 - [Logging](api/logging.md) - Debug logging utility
 - [Constants](api/constants.md) - Configuration system

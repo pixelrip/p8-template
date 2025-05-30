@@ -25,7 +25,8 @@ project/
 │   │   └── title.lua      # Title screen example
 │   ├── systems/           # Game systems
 │   │   ├── collision.lua  # Collision detection
-│   │   └── timer.lua      # Timer and tween system
+│   │   ├── timer.lua      # Timer and tween system
+│   │   └── camera.lua     # Camera system
 │   └── utils/
 │       ├── log.lua        # Logging utility
 │       └── math.lua       # Math utilities
@@ -73,6 +74,9 @@ Basic collision detection with extension points for tilemaps, groups, and optimi
 
 ### Timer System
 Simple timing and animation with extension points for advanced tweening. [Documentation](docs/api/timer.md)
+
+### Camera System
+Simple camera control with extension points for advanced behaviors. [Documentation](docs/api/camera.md)
 
 ### Constants System
 Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)
