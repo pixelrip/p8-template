@@ -61,3 +61,21 @@ function GameState:init(level, score)
     self.level = level or "level1"
     self.score = score or 0
 end
+```
+
+## Extension Points
+
+The game state system includes commented examples for common extensions. Uncomment and modify these as needed for your game:
+
+- **Transition Effects** - Smooth fades, slides, and other transitions between states
+- **State Stack** - Push/pop functionality for pause screens and overlays
+- **Data Persistence** - Share data between states (scores, settings, etc.)
+- **Pause System** - Pause current state and overlay pause screens
+- **Advanced Management** - State history, conditional transitions, validation
+
+## Performance Tips
+
+- Keep state switching lightweight - avoid heavy initialization
+- Use data persistence instead of recreating objects
+- Consider state pooling for frequently used states
+- Use transitions sparingly to preserve tokens
