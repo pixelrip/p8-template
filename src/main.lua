@@ -1,6 +1,7 @@
 require("config/constants")
 
 require("utils/log")
+require("utils/math")
 
 require("core/game-state")
 require("core/input-manager")

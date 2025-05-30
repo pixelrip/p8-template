@@ -27,7 +27,8 @@ project/
 │   │   ├── collision.lua  # Collision detection
 │   │   └── timer.lua      # Timer and tween system
 │   └── utils/
-│       └── log.lua        # Logging utility
+│       ├── log.lua        # Logging utility
+│       └── math.lua       # Math utilities
 ├── assets/                # Separate .p8 files for graphics/audio
 ├── build/                 # Generated files (dev/prod builds)
 ├── scripts/               # Build automation
@@ -75,6 +76,9 @@ Simple timing and animation with extension points for advanced tweening. [Docume
 
 ### Constants System
 Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)
+
+### Math Utilities
+Essential 2D game math with extension points for advanced calculations. [Documentation](docs/api/math.md)
 
 ### Logging Utility
 Simple debug logging that can grow into full debugging tools. [Documentation](docs/api/logging.md)
