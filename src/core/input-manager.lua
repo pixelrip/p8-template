@@ -1,240 +1,301 @@
--- Input Manager (im.lua)
--- Tracks button states and provides utilities for input handling
+-- Input Manager
+-- Simple input handling for Pico-8 games
+-- Designed to be minimal and extensible
 
 im = {
-    -- Current button states for each player (true = pressed, false = not pressed)
-    current = {{false, false, false, false, false, false}, {false, false, false, false, false, false}},
+    -- Current and previous button states (single player by default)
+    current = {false, false, false, false, false, false},
+    previous = {false, false, false, false, false, false},
     
-    -- Previous button states from last frame for each player
-    previous = {{false, false, false, false, false, false}, {false, false, false, false, false, false}},
-    
-    -- Cooldown timers for each button for each player (0 = no cooldown)
-    cooldowns = {{0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}},
-    
-    -- Hold timers for each button for each player (counts frames button has been held)
-    hold_timers = {{0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}},
-    
-    -- Global cooldown that affects all buttons
-    global_cooldown = 0,
+    -- Basic cooldown timers for each button
+    cooldowns = {0, 0, 0, 0, 0, 0},
     
     -- Default cooldown duration in frames
-    default_cooldown = 10,
-    
-    -- Default hold duration in frames (how long button must be held to trigger hold)
-    default_hold_duration = 30,  -- 1 second at 30fps
-    
-    -- Default repeat interval for held buttons (how often to trigger while holding)
-    default_repeat_interval = 6  -- 5 times per second at 30fps
+    default_cooldown = 10
 }
 
 -- Initialize the input manager
 function im:init()
-    -- Reset all states for both players
-    for p=0,1 do
-        for i=0,5 do
-            self.current[p+1][i+1] = false
-            self.previous[p+1][i+1] = false
-            self.cooldowns[p+1][i+1] = 0
-            self.hold_timers[p+1][i+1] = 0
-        end
+    for i = 1, 6 do
+        self.current[i] = false
+        self.previous[i] = false
+        self.cooldowns[i] = 0
     end
-    self.global_cooldown = 0
 end
 
 -- Update button states (call this at the beginning of each frame)
 function im:update()
-    -- Update global cooldown
-    if self.global_cooldown > 0 then
-        self.global_cooldown -= 1
-    end
-    
-    -- Update button states, cooldowns, and hold timers for both players
-    for p=0,1 do
-        for i=0,5 do
-            -- Store previous state
-            self.previous[p+1][i+1] = self.current[p+1][i+1]
-            
-            -- Update current state
-            self.current[p+1][i+1] = btn(i, p)
-            
-            -- Update cooldown
-            if self.cooldowns[p+1][i+1] > 0 then
-                self.cooldowns[p+1][i+1] -= 1
-            end
-            
-            -- Update hold timer
-            if self.current[p+1][i+1] then
-                -- Button is pressed, increment hold timer
-                self.hold_timers[p+1][i+1] += 1
-            else
-                -- Button is not pressed, reset hold timer
-                self.hold_timers[p+1][i+1] = 0
-            end
+    for i = 0, 5 do
+        -- Store previous state
+        self.previous[i + 1] = self.current[i + 1]
+        
+        -- Update current state
+        self.current[i + 1] = btn(i)
+        
+        -- Update cooldown
+        if self.cooldowns[i + 1] > 0 then
+            self.cooldowns[i + 1] -= 1
         end
     end
 end
 
+-- === BASIC INPUT FUNCTIONS ===
+
 -- Check if a button was just pressed this frame
-function im:pressed(button, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
+function im:pressed(button)
     local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Check if button is pressed now but wasn't pressed last frame
-    -- Also check cooldowns
-    return self.current[p_idx][idx] and 
-           not self.previous[p_idx][idx] and 
-           self.cooldowns[p_idx][idx] == 0 and
-           self.global_cooldown == 0
+    return self.current[idx] and 
+           not self.previous[idx] and 
+           self.cooldowns[idx] == 0
 end
 
 -- Check if a button was just released this frame
-function im:released(button, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
+function im:released(button)
     local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Check if button is not pressed now but was pressed last frame
-    return not self.current[p_idx][idx] and self.previous[p_idx][idx]
+    return not self.current[idx] and self.previous[idx]
 end
 
--- Check if a button is currently down
-function im:down(button, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
+-- Check if a button is currently held down
+function im:held(button)
     local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Check if button is currently pressed
-    return self.current[p_idx][idx]
-end
-
--- Check if a button has been held for the specified duration
-function im:held(button, duration, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
-    local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Use default duration if not specified
-    duration = duration or self.default_hold_duration
-    
-    -- Check if button has been held for at least the specified duration
-    return self.hold_timers[p_idx][idx] >= duration
-end
-
--- Check if a button has just reached the held threshold this frame
-function im:just_held(button, duration, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
-    local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Use default duration if not specified
-    duration = duration or self.default_hold_duration
-    
-    -- Check if button has exactly reached the hold duration this frame
-    return self.hold_timers[p_idx][idx] == duration
-end
-
--- Check for repeating input while a button is held
--- Returns true on initial press and then at regular intervals while held
-function im:repeat_input(button, initial_delay, repeat_interval, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
-    local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Use default values if not specified
-    initial_delay = initial_delay or self.default_hold_duration
-    repeat_interval = repeat_interval or self.default_repeat_interval
-    
-    -- Check for initial press
-    if self.current[p_idx][idx] and not self.previous[p_idx][idx] and 
-       self.cooldowns[p_idx][idx] == 0 and self.global_cooldown == 0 then
-        return true
-    end
-    
-    -- Check for repeat interval
-    if self.hold_timers[p_idx][idx] >= initial_delay then
-        -- Calculate how many frames past the initial delay
-        local frames_past_delay = self.hold_timers[p_idx][idx] - initial_delay
-        
-        -- Check if we're on a repeat interval frame
-        return frames_past_delay % repeat_interval == 0
-    end
-    
-    return false
+    return self.current[idx]
 end
 
 -- Set a cooldown for a specific button
-function im:set_cooldown(button, frames, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
+function im:set_cooldown(button, frames)
     local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Set cooldown
-    self.cooldowns[p_idx][idx] = frames or self.default_cooldown
+    self.cooldowns[idx] = frames or self.default_cooldown
 end
 
--- Set a global cooldown for all buttons
-function im:set_global_cooldown(frames)
-    self.global_cooldown = frames or self.default_cooldown
-end
+-- === EXTENSION POINTS ===
+-- The following are examples of common extensions.
+-- Uncomment and modify as needed for your game.
 
--- Wait for a button to be released before it can be pressed again
-function im:wait_for_release(button, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
-    local idx = button + 1
-    local p_idx = player_id + 1
-    
-    -- Set cooldown that will be cleared when button is released
-    if self.current[p_idx][idx] then
-        self.cooldowns[p_idx][idx] = 32767  -- Very high number (effectively infinite)
-    elseif self.cooldowns[p_idx][idx] > 0 and not self.current[p_idx][idx] then
-        -- Button was released, clear cooldown
-        self.cooldowns[p_idx][idx] = 0
-    end
-end
+-- TWO PLAYER SUPPORT
+-- Add support for multiple players:
+--
+-- im.players = {
+--     {current = {false, false, false, false, false, false},
+--      previous = {false, false, false, false, false, false},
+--      cooldowns = {0, 0, 0, 0, 0, 0}},
+--     {current = {false, false, false, false, false, false},
+--      previous = {false, false, false, false, false, false},
+--      cooldowns = {0, 0, 0, 0, 0, 0}}
+-- }
+--
+-- function im:pressed_p(button, player_id)
+--     player_id = player_id or 0
+--     local p = self.players[player_id + 1]
+--     local idx = button + 1
+--     return p.current[idx] and not p.previous[idx] and p.cooldowns[idx] == 0
+-- end
+--
+-- function im:update_multiplayer()
+--     for p = 0, 1 do
+--         local player = self.players[p + 1]
+--         for i = 0, 5 do
+--             player.previous[i + 1] = player.current[i + 1]
+--             player.current[i + 1] = btn(i, p)
+--             if player.cooldowns[i + 1] > 0 then
+--                 player.cooldowns[i + 1] -= 1
+--             end
+--         end
+--     end
+-- end
 
--- Clear all cooldowns
-function im:clear_cooldowns()
-    for p=0,1 do
-        for i=1,6 do
-            self.cooldowns[p+1][i] = 0
-        end
-    end
-    self.global_cooldown = 0
-end
+-- HOLD DETECTION
+-- Add hold timing and repeat functionality:
+--
+-- im.hold_timers = {0, 0, 0, 0, 0, 0}
+-- im.hold_threshold = 30  -- frames to trigger hold
+-- im.repeat_interval = 6  -- frames between repeats
+--
+-- function im:update_with_holds()
+--     for i = 0, 5 do
+--         self.previous[i + 1] = self.current[i + 1]
+--         self.current[i + 1] = btn(i)
+--         
+--         if self.cooldowns[i + 1] > 0 then
+--             self.cooldowns[i + 1] -= 1
+--         end
+--         
+--         -- Update hold timers
+--         if self.current[i + 1] then
+--             self.hold_timers[i + 1] += 1
+--         else
+--             self.hold_timers[i + 1] = 0
+--         end
+--     end
+-- end
+--
+-- function im:held_for(button, duration)
+--     duration = duration or self.hold_threshold
+--     return self.hold_timers[button + 1] >= duration
+-- end
+--
+-- function im:just_held(button, duration)
+--     duration = duration or self.hold_threshold
+--     return self.hold_timers[button + 1] == duration
+-- end
+--
+-- function im:repeat_input(button, initial_delay, repeat_rate)
+--     initial_delay = initial_delay or self.hold_threshold
+--     repeat_rate = repeat_rate or self.repeat_interval
+--     
+--     if self:pressed(button) then return true end
+--     
+--     if self.hold_timers[button + 1] >= initial_delay then
+--         local frames_past = self.hold_timers[button + 1] - initial_delay
+--         return frames_past % repeat_rate == 0
+--     end
+--     
+--     return false
+-- end
 
--- Get how long a button has been held (in frames)
-function im:hold_duration(button, player_id)
-    -- Default to player 0 if not specified
-    player_id = player_id or 0
-    
-    -- Convert button to 1-indexed for our arrays
-    local idx = button + 1
-    local p_idx = player_id + 1
-    
-    return self.hold_timers[p_idx][idx]
-end
+-- COMBO DETECTION
+-- Add input sequence detection:
+--
+-- im.combo_buffer = {}
+-- im.combo_window = 60  -- frames to complete combo
+-- im.max_combo_length = 8
+--
+-- function im:add_to_combo(button)
+--     add(self.combo_buffer, {button = button, time = 0})
+--     if #self.combo_buffer > self.max_combo_length then
+--         del(self.combo_buffer, self.combo_buffer[1])
+--     end
+-- end
+--
+-- function im:update_combos()
+--     -- Age combo inputs
+--     for i = #self.combo_buffer, 1, -1 do
+--         self.combo_buffer[i].time += 1
+--         if self.combo_buffer[i].time > self.combo_window then
+--             del(self.combo_buffer, self.combo_buffer[i])
+--         end
+--     end
+--     
+--     -- Add new inputs to combo buffer
+--     for i = 0, 5 do
+--         if self:pressed(i) then
+--             self:add_to_combo(i)
+--         end
+--     end
+-- end
+--
+-- function im:check_combo(sequence)
+--     if #self.combo_buffer < #sequence then return false end
+--     
+--     local start_idx = #self.combo_buffer - #sequence + 1
+--     for i = 1, #sequence do
+--         if self.combo_buffer[start_idx + i - 1].button ~= sequence[i] then
+--             return false
+--         end
+--     end
+--     return true
+-- end
+
+-- GESTURE RECOGNITION
+-- Add directional input patterns:
+--
+-- im.gesture_buffer = {}
+-- im.gesture_threshold = 8  -- frames between direction changes
+-- im.gesture_timeout = 90   -- frames to complete gesture
+--
+-- function im:get_direction()
+--     if self:held(0) then return "left" end
+--     if self:held(1) then return "right" end
+--     if self:held(2) then return "up" end
+--     if self:held(3) then return "down" end
+--     return nil
+-- end
+--
+-- function im:update_gestures()
+--     local current_dir = self:get_direction()
+--     local last_entry = self.gesture_buffer[#self.gesture_buffer]
+--     
+--     if current_dir and (not last_entry or last_entry.direction ~= current_dir) then
+--         add(self.gesture_buffer, {direction = current_dir, time = 0})
+--     end
+--     
+--     -- Age gesture inputs
+--     for i = #self.gesture_buffer, 1, -1 do
+--         self.gesture_buffer[i].time += 1
+--         if self.gesture_buffer[i].time > self.gesture_timeout then
+--             del(self.gesture_buffer, self.gesture_buffer[i])
+--         end
+--     end
+-- end
+--
+-- function im:check_gesture(pattern)
+--     if #self.gesture_buffer < #pattern then return false end
+--     
+--     local start_idx = #self.gesture_buffer - #pattern + 1
+--     for i = 1, #pattern do
+--         if self.gesture_buffer[start_idx + i - 1].direction ~= pattern[i] then
+--             return false
+--         end
+--     end
+--     return true
+-- end
+
+-- INPUT RECORDING
+-- Record and playback input sequences:
+--
+-- im.recording = false
+-- im.recorded_inputs = {}
+-- im.playback_inputs = {}
+-- im.playback_frame = 0
+--
+-- function im:start_recording()
+--     self.recording = true
+--     self.recorded_inputs = {}
+-- end
+--
+-- function im:stop_recording()
+--     self.recording = false
+--     return self.recorded_inputs
+-- end
+--
+-- function im:record_frame()
+--     if self.recording then
+--         local frame_input = {}
+--         for i = 0, 5 do
+--             frame_input[i + 1] = self.current[i + 1]
+--         end
+--         add(self.recorded_inputs, frame_input)
+--     end
+-- end
+--
+-- function im:start_playback(recorded_sequence)
+--     self.playback_inputs = recorded_sequence
+--     self.playback_frame = 1
+-- end
+--
+-- function im:update_playback()
+--     if self.playback_inputs and self.playback_frame <= #self.playback_inputs then
+--         local frame_input = self.playback_inputs[self.playback_frame]
+--         for i = 1, 6 do
+--             self.current[i] = frame_input[i]
+--         end
+--         self.playback_frame += 1
+--     end
+-- end
+
+-- BUTTON REMAPPING
+-- Allow custom button configurations:
+--
+-- im.button_map = {0, 1, 2, 3, 4, 5}  -- Default mapping
+--
+-- function im:remap_button(from_button, to_button)
+--     self.button_map[from_button + 1] = to_button
+-- end
+--
+-- function im:get_mapped_button(button)
+--     return self.button_map[button + 1] or button
+-- end
+--
+-- function im:pressed_mapped(button)
+--     local mapped = self:get_mapped_button(button)
+--     return self:pressed(mapped)
+-- end

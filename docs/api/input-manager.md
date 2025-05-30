@@ -1,70 +1,50 @@
-# Input Manager
+# Input Manager API
 
-Handles button states, cooldowns, and input patterns.
+Simple input handling for Pico-8 games. Essential functionality that works immediately with clear expansion points.
 
-## Quick Reference
+## Basic Functions
 
-```lua
-im:init()                      -- Initialize (call once)
-im:update()                    -- Update states (call each frame)
-im:pressed(btn, player)        -- Just pressed this frame
-im:released(btn, player)       -- Just released this frame
-im:down(btn, player)           -- Currently held down
-im:held(btn, duration, player) -- Held for duration frames
-```
+### im:init()
+Initialize the input manager. Call once at startup.
 
-## Basic Usage
+### im:update()
+Update button states. Call at the beginning of each frame.
+
+### im:pressed(button)
+Check if a button was just pressed this frame.
 
 ```lua
-function _init()
-    im:init()
-end
-
-function _update()
-    im:update()
-    
-    -- Movement
-    if im:down(0) then player.x -= 2 end  -- Left held
-    if im:down(1) then player.x += 2 end  -- Right held
-    
-    -- Actions
-    if im:pressed(4) then shoot() end     -- 🅾️ pressed
-    if im:released(5) then charge_shot() end  -- ❎ released
+if im:pressed(4) then  -- 🅾️ button
+    shoot()
 end
 ```
 
-## Advanced Features
+### im:released(button)
+Check if a button was just released this frame.
 
-### Hold Detection
 ```lua
--- Charge attack after holding for 1 second
-if im:just_held(4, 30) then  -- 30 frames = 1 sec
-    start_charge_effect()
-end
-
-if im:held(4, 30) and im:released(4) then
-    fire_charge_shot()
+if im:released(4) then  -- 🅾️ released
+    charge_shot()
 end
 ```
 
-### Repeat Input
+### im:held(button)
+Check if a button is currently held down.
+
 ```lua
--- Menu navigation with repeat
-if im:repeat_input(2, 15, 8) then  -- Down, 0.5s delay, repeat every 8 frames
-    menu_cursor += 1
+if im:held(0) then  -- Left arrow
+    player.x -= 2
 end
 ```
 
-### Cooldowns
+### im:set_cooldown(button, frames)
+Set a cooldown for a specific button to prevent rapid input.
+
 ```lua
--- Prevent rapid fire
 if im:pressed(4) then
     shoot()
     im:set_cooldown(4, 10)  -- 10 frame cooldown
 end
-
--- Global cooldown (affects all buttons)
-im:set_global_cooldown(30)
 ```
 
 ## Button IDs
@@ -76,11 +56,40 @@ im:set_global_cooldown(30)
 3 = Down
 ```
 
-## Two Players
+## Basic Usage Pattern
 
 ```lua
--- Player 0 (default)
-if im:pressed(4, 0) then player1_action() end
+function _init()
+    im:init()
+end
 
--- Player 1
-if im:pressed(4, 1) then player2_action() end
+function _update()
+    im:update()
+    
+    -- Movement
+    if im:held(0) then player.x -= 2 end  -- Left
+    if im:held(1) then player.x += 2 end  -- Right
+    
+    -- Actions
+    if im:pressed(4) then shoot() end     -- 🅾️ pressed
+    if im:released(5) then jump() end     -- ❎ released
+end
+```
+
+## Extension Points
+
+The input manager includes commented examples for common extensions. Uncomment and modify these as needed for your game:
+
+- **Two Player Support** - Handle multiple players with separate input states
+- **Hold Detection** - Detect how long buttons are held, repeat input functionality
+- **Combo Detection** - Recognize input sequences (Street Fighter-style combos)
+- **Gesture Recognition** - Detect directional patterns and swipes
+- **Input Recording** - Record and playback input sequences for demos/replays
+- **Button Remapping** - Allow custom button configurations for accessibility
+
+## Performance Tips
+
+- Keep input checking simple - avoid complex logic in update loops
+- Use cooldowns sparingly to preserve responsiveness
+- Consider caching frequently checked input states
+- For advanced features, only enable what your game actually needs

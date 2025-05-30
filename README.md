@@ -64,7 +64,7 @@ See [docs/README.md](docs/README.md) for complete documentation.
 Simple state management with examples for complex transitions. [Documentation](docs/api/game-state.md)
 
 ### Input Manager
-Essential input handling with patterns for advanced features. [Documentation](docs/api/input-manager.md)
+Simple input handling with extension points for advanced features. [Documentation](docs/api/input-manager.md)
 
 ### Collision System
 Basic collision detection with extension points for tilemaps, groups, and optimization. [Documentation](docs/api/collision.md)

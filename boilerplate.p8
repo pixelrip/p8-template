@@ -52,184 +52,100 @@ end
 end
 a.c["core/input-manager"]=function()
 v={
-p={{false,false,false,false,false,false},{false,false,false,false,false,false}},
-w={{false,false,false,false,false,false},{false,false,false,false,false,false}},
-x={{0,0,0,0,0,0},{0,0,0,0,0,0}},
-y={{0,0,0,0,0,0},{0,0,0,0,0,0}},
-z=0,
-ba=10,
-bb=30,
-bc=6
+p={false,false,false,false,false,false},
+w={false,false,false,false,false,false},
+x={0,0,0,0,0,0},
+y=10
 }
 function v:k()
-for bd=0,1 do
-for be=0,5 do
-self.p[bd+1][be+1]=false
-self.w[bd+1][be+1]=false
-self.x[bd+1][be+1]=0
-self.y[bd+1][be+1]=0
+for z=1,6 do
+self.p[z]=false
+self.w[z]=false
+self.x[z]=0
 end
-end
-self.z=0
 end
 function v:l()
-if self.z>0 then
-self.z-=1
-end
-for bd=0,1 do
-for be=0,5 do
-self.w[bd+1][be+1]=self.p[bd+1][be+1]
-self.p[bd+1][be+1]=btn(be,bd)
-if self.x[bd+1][be+1]>0 then
-self.x[bd+1][be+1]-=1
-end
-if self.p[bd+1][be+1] then
-self.y[bd+1][be+1]+=1
-else
-self.y[bd+1][be+1]=0
+for z=0,5 do
+self.w[z+1]=self.p[z+1]
+self.p[z+1]=btn(z)
+if self.x[z+1]>0 then
+self.x[z+1]-=1
 end
 end
 end
+function v:ba(bb)
+local bc=bb+1
+return self.p[bc] and
+not self.w[bc] and
+self.x[bc]==0
 end
-function v:bf(bg,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-return self.p[bj][bi] and
-not self.w[bj][bi] and
-self.x[bj][bi]==0 and
-self.z==0
+function v:bd(bb)
+local bc=bb+1
+return not self.p[bc] and self.w[bc]
 end
-function v:bk(bg,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-return not self.p[bj][bi] and self.w[bj][bi]
+function v:be(bb)
+local bc=bb+1
+return self.p[bc]
 end
-function v:bl(bg,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-return self.p[bj][bi]
-end
-function v:bm(bg,bn,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-bn=bn or self.bb
-return self.y[bj][bi]>=bn
-end
-function v:bo(bg,bn,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-bn=bn or self.bb
-return self.y[bj][bi]==bn
-end
-function v:bp(bg,bq,br,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-bq=bq or self.bb
-br=br or self.bc
-if self.p[bj][bi] and not self.w[bj][bi] and
-self.x[bj][bi]==0 and self.z==0 then
-return true
-end
-if self.y[bj][bi]>=bq then
-local bs=self.y[bj][bi]-bq
-return bs%br==0
-end
-return false
-end
-function v:bt(bg,bu,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-self.x[bj][bi]=bu or self.ba
-end
-function v:bv(bu)
-self.z=bu or self.ba
-end
-function v:bw(bg,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-if self.p[bj][bi] then
-self.x[bj][bi]=32767
-elseif self.x[bj][bi]>0 and not self.p[bj][bi] then
-self.x[bj][bi]=0
-end
-end
-function v:bx()
-for bd=0,1 do
-for be=1,6 do
-self.x[bd+1][be]=0
-end
-end
-self.z=0
-end
-function v:by(bg,bh)
-bh=bh or 0
-local bi=bg+1
-local bj=bh+1
-return self.y[bj][bi]
+function v:bf(bb,bg)
+local bc=bb+1
+self.x[bc]=bg or self.y
 end
 end
 a.c["systems/collision"]=function()
-bz={}
-function bz.ca(cb,cc,cd,ce,cf,cg)
-return cb>=cd and cb<cd+cf and
-cc>=ce and cc<ce+cg
+bh={}
+function bh.bi(bj,bk,bl,bm,bn,bo)
+return bj>=bl and bj<bl+bn and
+bk>=bm and bk<bm+bo
 end
-function bz.ch(ci,cj,ck,cl,cm,cn,co,cp)
-return ci<cm+co and cm<ci+ck and
-cj<cn+cp and cn<cj+cl
+function bh.bp(bq,br,bs,bt,bu,bv,bw,bx)
+return bq<bu+bw and bu<bq+bs and
+br<bv+bx and bv<br+bt
 end
-function bz.cq(ci,cj,cr,cm,cn,cs)
-local ct,cu=cm-ci,cn-cj
-local cv=ct*ct+cu*cu
-local cw=(cr+cs)*(cr+cs)
-return cv<=cw
+function bh.by(bq,br,bz,bu,bv,ca)
+local cb,cc=bu-bq,bv-br
+local cd=cb*cb+cc*cc
+local ce=(bz+ca)*(bz+ca)
+return cd<=ce
 end
-function bz.cx(cy,cz)
-return bz.ch(cy.da,cy.db,cy.dc,cy.dd,
-cz.da,cz.db,cz.dc,cz.dd)
+function bh.cf(cg,ch)
+return bh.bp(cg.ci,cg.cj,cg.ck,cg.cl,
+ch.ci,ch.cj,ch.ck,ch.cl)
 end
 end
 a.c["states/title"]=function()
-de=h:i()
-function de:k()
+cm=h:i()
+function cm:k()
 f("Entering Title State")
 music(0)
 end
-function de:l()
+function cm:l()
 end
-function de:m()
+function cm:m()
 cls()
 print("boilerplate",42,60,7)
 sspr(8,0,15,11,57,80)
 end
-function de:n()
+function cm:n()
 f("Exiting Title State")
 end
 end
-function df(bd)
-local dg=a.b
-if(dg[bd]==nil) dg[bd]=a.c[bd]()
-if(dg[bd]==nil) dg[bd]=true
-return dg[bd]
+function cn(co)
+local cp=a.b
+if(cp[co]==nil) cp[co]=a.c[co]()
+if(cp[co]==nil) cp[co]=true
+return cp[co]
 end
-df("config/constants")
-df("utils/log")
-df("core/game-state")
-df("core/input-manager")
-df("systems/collision")
-df("states/title")
+cn("config/constants")
+cn("utils/log")
+cn("core/game-state")
+cn("core/input-manager")
+cn("systems/collision")
+cn("states/title")
 function _init()
 f("=== Game Started ===")
 v:k()
-o:add("title",de)
+o:add("title",cm)
 o:u("title")
 end
 function _update()
