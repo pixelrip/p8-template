@@ -1,6 +1,6 @@
 # Pico-8 Game Boilerplate
 
-The project is meant to serve as a well structured project starting point for a PICO-8 game. 
+A minimal but extensible starting point for Pico-8 games. Provides essential systems with clear expansion points - start simple, grow smart. 
 
 ## Prerequisites
 
@@ -42,6 +42,13 @@ project/
 - Build the project with `./scripts/build.sh`
 - Load and run the compiled file in Pico-8
 
+## Design Philosophy
+
+- **Minimal core** - Essential functionality that works immediately
+- **Clear expansion points** - Commented examples show how to grow each system
+- **Easy removal** - Components can be removed without breaking others
+- **Token efficient** - Optimized for Pico-8's constraints
+
 ## Documentation
 
 See [docs/README.md](docs/README.md) for complete documentation.
@@ -54,16 +61,16 @@ See [docs/README.md](docs/README.md) for complete documentation.
 ## Pre-Built Components
 
 ### Game State Manager
-Simple state management system. [Documentation](docs/api/game-state.md)
+Simple state management with examples for complex transitions. [Documentation](docs/api/game-state.md)
 
 ### Input Manager
-Advanced input handling with cooldowns and patterns. [Documentation](docs/api/input-manager.md)
+Essential input handling with patterns for advanced features. [Documentation](docs/api/input-manager.md)
 
 ### Collision System
-Basic collision detection with extension points. [Documentation](docs/api/collision.md)
+Basic collision detection with extension points for tilemaps, groups, and optimization. [Documentation](docs/api/collision.md)
 
 ### Constants System
-Centralized configuration using flat naming. [Documentation](docs/api/constants.md)
+Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)
 
 ### Logging Utility
-Simple debug logging. [Documentation](docs/api/logging.md)
+Simple debug logging that can grow into full debugging tools. [Documentation](docs/api/logging.md)
