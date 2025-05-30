@@ -34,8 +34,34 @@ project/
 
 ## Workflow
 
-- Edit sprites in `assets/sprites.p8`
+- Edit spritesheet in `assets/sprites.p8`
 - Edit audio (sfx and patterns) in `assets/audio.p8`
 - Build the project with `./scripts/build.sh`
 - Load and run the compiled file in Pico-8
 
+## Documentation
+
+`/docs/design/`
+- `game-design-document.md`: a lightweight template for a game design document meant to help with team alignment and prioritization
+- `technical-design-document.md`: anothr lightweight template focused on technical requirements for the project
+
+`/docs/src/`
+- Intended to mirror the `/src` folder for the project, providing concise documentation and example usage of the various entities, systems, utilities, and core components
+
+`/docs/guidelines.md`
+- This boilerplate assumes a certain approach to how the games code will be architected, what patterns the code will follow, and what optimization strategies will be employed. This document serves to outline that approach.
+
+
+## Pre-Built Components
+
+### Constants System
+Centralized configuration for all game parameters using a flat naming structure. [Documentation](docs/src/config/constants.md)
+
+### Game State Manager
+A simple game state manager that nearly any games could use. [Documentation](docs/src/core/game-state.md)
+
+### Input Manager
+A lightweight input manager for button presses, etc. [[Documentation]](docs/src/core/input-manager.md)
+
+### Logging Utility
+A lightweight logging tool [Documentation](docs/src/utils/log.md)
