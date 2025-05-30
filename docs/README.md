@@ -12,6 +12,7 @@
 - [Collision System](api/collision.md) - Basic collision detection
 - [Timer System](api/timer.md) - Timing and animation system
 - [Camera System](api/camera.md) - Simple camera control
+- [Particle System](api/particles.md) - Simple particle effects
 - [Math Utilities](api/math.md) - Essential 2D game math
 - [Logging](api/logging.md) - Debug logging utility
 - [Constants](api/constants.md) - Configuration system

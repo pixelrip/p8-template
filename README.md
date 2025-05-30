@@ -26,7 +26,8 @@ project/
 │   ├── systems/           # Game systems
 │   │   ├── collision.lua  # Collision detection
 │   │   ├── timer.lua      # Timer and tween system
-│   │   └── camera.lua     # Camera system
+│   │   ├── camera.lua     # Camera system
+│   │   └── particles.lua  # Particle system
 │   └── utils/
 │       ├── log.lua        # Logging utility
 │       └── math.lua       # Math utilities
@@ -77,6 +78,9 @@ Simple timing and animation with extension points for advanced tweening. [Docume
 
 ### Camera System
 Simple camera control with extension points for advanced behaviors. [Documentation](docs/api/camera.md)
+
+### Particle System
+Simple particle effects with extension points for advanced visual effects. [Documentation](docs/api/particles.md)
 
 ### Constants System
 Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)

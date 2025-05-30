@@ -9,6 +9,7 @@ require("core/input-manager")
 require("systems/collision")
 require("systems/timer")
 require("systems/camera")
+require("systems/particles")
 
 require("states/title")
 
@@ -35,6 +36,9 @@ function _update()
     
     -- Update camera system
     cam:update()
+    
+    -- Update particle system
+    particles:update()
     
     -- Update current game state
     gs:update()
