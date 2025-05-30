@@ -6,6 +6,7 @@ require("core/game-state")
 require("core/input-manager")
 
 require("systems/collision")
+require("systems/timer")
 
 require("states/title")
 
@@ -26,6 +27,9 @@ end
 function _update()
     -- Update input manager
     im:update()
+    
+    -- Update timer system
+    timer:update()
     
     -- Update current game state
     gs:update()

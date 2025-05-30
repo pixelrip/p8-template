@@ -24,7 +24,8 @@ project/
 │   ├── states/            # Game states
 │   │   └── title.lua      # Title screen example
 │   ├── systems/           # Game systems
-│   │   └── collision.lua  # Collision detection
+│   │   ├── collision.lua  # Collision detection
+│   │   └── timer.lua      # Timer and tween system
 │   └── utils/
 │       └── log.lua        # Logging utility
 ├── assets/                # Separate .p8 files for graphics/audio
@@ -68,6 +69,9 @@ Simple input handling with extension points for advanced features. [Documentatio
 
 ### Collision System
 Basic collision detection with extension points for tilemaps, groups, and optimization. [Documentation](docs/api/collision.md)
+
+### Timer System
+Simple timing and animation with extension points for advanced tweening. [Documentation](docs/api/timer.md)
 
 ### Constants System
 Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)
