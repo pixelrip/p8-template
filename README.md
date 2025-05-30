@@ -17,14 +17,16 @@ project/
 │   ├── main.lua           # Entry point with _init, _update, _draw
 │   ├── config/
 │   │   └── constants.lua  # Flat constants structure
-│   ├── entities/          # Game objects (Player, Enemy, etc.)
-│   ├── systems/           # Cross-entity mechanics (CollisionSystem, etc.)
-│   ├── states/            # Game states (TitleState, GameplayState, etc.)
-│   ├── ui/                # Interface components
-│   │   ├── draw_utils.lua # Drawing utilities
-│   │   └── ui.lua         # UI management
-│   └── lib/               # External libraries (gs.lua, im.lua)
-├── assets/                # Separate .p8.png files for graphics/audio
+│   ├── core/              # Core systems
+│   │   ├── game-state.lua # State management
+│   │   └── input-manager.lua # Input handling
+│   ├── entities/          # Game objects (empty - add your entities)
+│   ├── states/            # Game states
+│   │   └── title.lua      # Title screen example
+│   ├── systems/           # Game systems (empty - add your systems)
+│   └── utils/
+│       └── log.lua        # Logging utility
+├── assets/                # Separate .p8 files for graphics/audio
 ├── build/                 # Generated files (dev/prod builds)
 ├── scripts/               # Build automation
 ├── config/                # Build configuration
@@ -41,27 +43,23 @@ project/
 
 ## Documentation
 
-`/docs/design/`
-- `game-design-document.md`: a lightweight template for a game design document meant to help with team alignment and prioritization
-- `technical-design-document.md`: anothr lightweight template focused on technical requirements for the project
+See [docs/README.md](docs/README.md) for complete documentation.
 
-`/docs/src/`
-- Intended to mirror the `/src` folder for the project, providing concise documentation and example usage of the various entities, systems, utilities, and core components
-
-`/docs/guidelines.md`
-- This boilerplate assumes a certain approach to how the games code will be architected, what patterns the code will follow, and what optimization strategies will be employed. This document serves to outline that approach.
-
+**Quick Links:**
+- [Getting Started](docs/getting-started.md) - Setup and first game state
+- [Architecture Guide](docs/architecture.md) - Patterns and optimization
+- [API Reference](docs/api/) - Core systems documentation
 
 ## Pre-Built Components
 
-### Constants System
-Centralized configuration for all game parameters using a flat naming structure. [Documentation](docs/src/config/constants.md)
-
 ### Game State Manager
-A simple game state manager that nearly any games could use. [Documentation](docs/src/core/game-state.md)
+Simple state management system. [Documentation](docs/api/game-state.md)
 
 ### Input Manager
-A lightweight input manager for button presses, etc. [[Documentation]](docs/src/core/input-manager.md)
+Advanced input handling with cooldowns and patterns. [Documentation](docs/api/input-manager.md)
+
+### Constants System
+Centralized configuration using flat naming. [Documentation](docs/api/constants.md)
 
 ### Logging Utility
-A lightweight logging tool [Documentation](docs/src/utils/log.md)
+Simple debug logging. [Documentation](docs/api/logging.md)
