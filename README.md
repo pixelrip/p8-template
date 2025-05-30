@@ -9,6 +9,26 @@ A minimal but extensible starting point for Pico-8 games. Provides essential sys
 3. **picotool** - Install from [GitHub](https://github.com/dansanderson/picotool)
 3. **Git** (recommended) - For version control
 
+## Quick Start
+
+1. **Clone and rename**
+   ```bash
+   git clone [repo-url] my-game
+   cd my-game
+   mv boilerplate.p8 my-game.p8
+   ```
+
+2. **Build and test**
+   ```bash
+   ./scripts/build.sh
+   ```
+   Load `my-game.p8` in Pico-8 and run it.
+
+3. **Start building**
+   - Edit `src/states/title.lua` for your first game state
+   - Add entities in `src/entities/`
+   - Use systems: `particles:explosion(x, y)`, `cam:follow(player)`, etc.
+
 ## Project Structure
 
 ```
