@@ -33,12 +33,12 @@ end
 
 **On macOS/Linux:**
 ```bash
-tail -f ~/Library/Application\ Support/pico-8/logs/log
+tail -f log.p8l
 ```
 
 **On Windows:**
 ```cmd
-type %APPDATA%\pico-8\logs\log
+type log.p8l
 ```
 
 **In PICO-8 console:**
@@ -49,7 +49,6 @@ Creates `log.txt` in current directory.
 
 ## Tips
 
-- Use `DEBUG_MODE` constant to toggle logging
 - Log state changes and important events
 - Include context in messages
 - Clear logs between sessions if needed

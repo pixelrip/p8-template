@@ -24,10 +24,6 @@ A minimal but extensible starting point for Pico-8 games. Provides essential sys
    ```
    Load `my-game.p8` in Pico-8 and run it.
 
-3. **Start building**
-   - Edit `src/states/title.lua` for your first game state
-   - Add entities in `src/entities/`
-   - Use systems: `particles:explosion(x, y)`, `cam:follow(player)`, etc.
 
 ## Project Structure
 
@@ -35,23 +31,11 @@ A minimal but extensible starting point for Pico-8 games. Provides essential sys
 project/
 ├── src/                   # Source code
 │   ├── main.lua           # Entry point with _init, _update, _draw
-│   ├── config/
-│   │   └── constants.lua  # Flat constants structure
-│   ├── core/              # Core systems
-│   │   ├── game-state.lua # State management
-│   │   └── input-manager.lua # Input handling
-│   ├── entities/          # Game objects (empty - add your entities)
-│   ├── states/            # Game states
-│   │   └── title.lua      # Title screen example
-│   ├── systems/           # Game systems
-│   │   ├── collision.lua  # Collision detection
-│   │   ├── timer.lua      # Timer and tween system
-│   │   ├── camera.lua     # Camera system
-│   │   └── particles.lua  # Particle system
 │   └── utils/
-│       ├── log.lua        # Logging utility
-│       └── math.lua       # Math utilities
-├── assets/                # Separate .p8 files for graphics/audio
+│       └── log.lua        # Logging utility
+├── assets/                
+│       ├── audio.p8       # Audio Data
+│       └── sprites.p8     # Spritesheet Data
 ├── build/                 # Generated files (dev/prod builds)
 ├── scripts/               # Build automation
 ├── config/                # Build configuration
@@ -66,47 +50,7 @@ project/
 - Build the project with `./scripts/build.sh`
 - Load and run the compiled file in Pico-8
 
-## Design Philosophy
-
-- **Minimal core** - Essential functionality that works immediately
-- **Clear expansion points** - Commented examples show how to grow each system
-- **Easy removal** - Components can be removed without breaking others
-- **Token efficient** - Optimized for Pico-8's constraints
-
 ## Documentation
 
 See [docs/README.md](docs/README.md) for complete documentation.
 
-**Quick Links:**
-- [Getting Started](docs/getting-started.md) - Setup and first game state
-- [Architecture Guide](docs/architecture.md) - Patterns and optimization
-- [API Reference](docs/api/) - Core systems documentation
-
-## Pre-Built Components
-
-### Game State Manager
-Simple state management with examples for complex transitions. [Documentation](docs/api/game-state.md)
-
-### Input Manager
-Simple input handling with extension points for advanced features. [Documentation](docs/api/input-manager.md)
-
-### Collision System
-Basic collision detection with extension points for tilemaps, groups, and optimization. [Documentation](docs/api/collision.md)
-
-### Timer System
-Simple timing and animation with extension points for advanced tweening. [Documentation](docs/api/timer.md)
-
-### Camera System
-Simple camera control with extension points for advanced behaviors. [Documentation](docs/api/camera.md)
-
-### Particle System
-Simple particle effects with extension points for advanced visual effects. [Documentation](docs/api/particles.md)
-
-### Constants System
-Centralized configuration that scales from simple to complex games. [Documentation](docs/api/constants.md)
-
-### Math Utilities
-Essential 2D game math with extension points for advanced calculations. [Documentation](docs/api/math.md)
-
-### Logging Utility
-Simple debug logging that can grow into full debugging tools. [Documentation](docs/api/logging.md)
