@@ -1,4 +1,4 @@
-# Architecture Guide
+# Development Guidelines
 
 ## PICO-8 Optimization
 
