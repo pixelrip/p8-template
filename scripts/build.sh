@@ -6,27 +6,27 @@ ASSETS_DIR="assets"
 BUILD_DIR="build"
 
 # Create build directories
-mkdir -p $BUILD_DIR/dev $BUILD_DIR/prod
+mkdir -p $BUILD_DIR/dev $BUILD_DIR/prod $BUILD_DIR/swico8
 
 # Set the Lua path for require() to work
 LUA_PATH="?;?.lua;src/?;src/?.lua;src/?/init.lua"
 
 echo "Building development version..."
 # Development build - using actual assets without minification
-p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8 \
+p8tool build $BUILD_DIR/dev/${PROJECT_NAME}-dev-built.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
     --gfx $ASSETS_DIR/sprites.p8 \
     --sfx $ASSETS_DIR/audio.p8 \
     --music $ASSETS_DIR/audio.p8
 
-p8tool luamin --keep-all-names $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8
-mv $BUILD_DIR/dev/${PROJECT_NAME}_dev_built_fmt.p8 $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8
-rm $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8
+p8tool luamin --keep-all-names $BUILD_DIR/dev/${PROJECT_NAME}-dev-built.p8
+mv $BUILD_DIR/dev/${PROJECT_NAME}-dev-built_fmt.p8 $BUILD_DIR/dev/${PROJECT_NAME}-dev.p8
+rm $BUILD_DIR/dev/${PROJECT_NAME}-dev-built.p8
 
 echo "Building production version..."
 # Production build - using actual assets with minification
-p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 \
+p8tool build $BUILD_DIR/prod/${PROJECT_NAME}-prod.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
     --gfx $ASSETS_DIR/sprites.p8 \
@@ -36,11 +36,34 @@ p8tool build $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 \
     --keep-names-from-file=config/preserve_names.txt
 
 # Copy final distribution
-cp $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8 ${PROJECT_NAME}.p8
+cp $BUILD_DIR/prod/${PROJECT_NAME}-prod.p8 ${PROJECT_NAME}.p8
+
+
+echo "Building swico8 version..."
+# swico8 build - based on prod build, but with injected code
+# Create a temporary main.lua for the swico8 build
+sed -i.bak '/function _init()/a \
+    menuitem(1, "swico-8 games", function() load("./swico8.p8") end)
+' $SRC_DIR/main.lua
+mv $SRC_DIR/main.lua $SRC_DIR/main.swico8.lua
+mv $SRC_DIR/main.lua.bak $SRC_DIR/main.lua
+
+p8tool build $BUILD_DIR/swico8/${PROJECT_NAME}-swico8.p8 \
+    --lua $SRC_DIR/main.swico8.lua \
+    --lua-path="$LUA_PATH" \
+    --gfx $ASSETS_DIR/sprites.p8 \
+    --sfx $ASSETS_DIR/audio.p8 \
+    --music $ASSETS_DIR/audio.p8 \
+    --lua-minify \
+    --keep-names-from-file=config/preserve_names.txt
+
+# Clean up the temporary file
+rm $SRC_DIR/main.swico8.lua
 
 echo "Build complete!"
-echo "Development build: $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8"
-echo "Production build: $BUILD_DIR/prod/${PROJECT_NAME}_prod.p8"
+echo "Development build: $BUILD_DIR/dev/${PROJECT_NAME}-dev.p8"
+echo "Production build: $BUILD_DIR/prod/${PROJECT_NAME}-prod.p8"
+echo "swico8 build: $BUILD_DIR/swico8/${PROJECT_NAME}-swico8.p8"
 echo "Final cart: ${PROJECT_NAME}.p8"
 
 # Show stats for the final cartridge
