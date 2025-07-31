@@ -29,6 +29,7 @@ A minimal but extensible starting point for Pico-8 games. Provides essential sys
 
 ```
 project/
+├── .vscode                # VS Code settings
 ├── src/                   # Source code
 │   ├── main.lua           # Entry point with _init, _update, _draw
 │   └── utils/
