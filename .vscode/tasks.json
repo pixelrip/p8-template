@@ -16,7 +16,9 @@
       "label": "Build & Run (Dev)",
       "type": "shell",
       "command": "pico8 -run builds/dev/p8-template_dev.p8",
-      "dependsOn": ["Build"],
+      "dependsOn": [
+        "Build"
+      ],
       "problemMatcher": [],
       "detail": "Builds the game and runs the dev version in PICO-8."
     },
@@ -24,7 +26,9 @@
       "label": "Build & Run (Prod)",
       "type": "shell",
       "command": "pico8 -run builds/prod/p8-template_prod.p8",
-      "dependsOn": ["Build"],
+      "dependsOn": [
+        "Build"
+      ],
       "problemMatcher": [],
       "detail": "Builds the game and runs the prod version in PICO-8."
     }
