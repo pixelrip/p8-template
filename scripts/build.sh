@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="boilerplate"  # Matches your current setup
+PROJECT_NAME="p8-template" 
 SRC_DIR="src"
 ASSETS_DIR="assets"
 BUILD_DIR="build"
@@ -12,13 +12,17 @@ mkdir -p $BUILD_DIR/dev $BUILD_DIR/prod
 LUA_PATH="?;?.lua;src/?;src/?.lua;src/?/init.lua"
 
 echo "Building development version..."
-# Development build - using actual assets with proper p8tool flags
-p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8 \
+# Development build - using actual assets without minification
+p8tool build $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8 \
     --lua $SRC_DIR/main.lua \
     --lua-path="$LUA_PATH" \
     --gfx $ASSETS_DIR/sprites.p8 \
     --sfx $ASSETS_DIR/audio.p8 \
     --music $ASSETS_DIR/audio.p8
+
+p8tool luamin --keep-all-names $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8
+mv $BUILD_DIR/dev/${PROJECT_NAME}_dev_built_fmt.p8 $BUILD_DIR/dev/${PROJECT_NAME}_dev.p8
+rm $BUILD_DIR/dev/${PROJECT_NAME}_dev_built.p8
 
 echo "Building production version..."
 # Production build - using actual assets with minification
