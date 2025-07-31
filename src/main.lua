@@ -1,50 +1,23 @@
-require("config/constants")
-
 require("utils/log")
-require("utils/math")
-
-require("core/game-state")
-require("core/input-manager")
-
-require("systems/collision")
-require("systems/timer")
-require("systems/camera")
-require("systems/particles")
-
-require("states/title")
 
 -- Main entry point for the game
 function _init()
     log("=== Game Started ===")
-    
-    -- Initialize input manager
-    im:init()
-    
-    -- Register game states
-    gs:add("title", TitleState)
-    
-    -- Start with title screen
-    gs:switch("title")
+
+    -- Play music pattern from assets/music.p8
+    music(0)
 end
 
 function _update()
-    -- Update input manager
-    im:update()
-    
-    -- Update timer system
-    timer:update()
-    
-    -- Update camera system
-    cam:update()
-    
-    -- Update particle system
-    particles:update()
-    
-    -- Update current game state
-    gs:update()
+    -- No update logic required
 end
 
 function _draw()
-    -- Draw current game state
-    gs:draw()
+    -- Clear the screen
+    cls()
+
+    -- Draw the sprite from assets/sprites.p8
+    sspr(8,0,15,11,57,60)
+
+    print("hello, world!", 38, 76, 7)
 end
