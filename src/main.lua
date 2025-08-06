@@ -14,10 +14,13 @@ end
 
 function _draw()
     -- Clear the screen
-    cls()
+    cls(1)
 
     -- Draw the sprite from assets/sprites.p8
-    sspr(8,0,15,11,57,60)
+    palt(0,false)
+    palt(11,true)
+    sspr(8,0,17,13,56,58)
+    palt()
 
     print("hello, world!", 38, 76, 7)
 end
