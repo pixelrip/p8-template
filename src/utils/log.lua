@@ -3,15 +3,20 @@
 
 -- Log a message to the log file
 -- @param txt - The message to log (will be converted to string)
-function log(txt)
+
+local Log = {}
+
+function Log.print(txt)
 	printh(tostr(txt), "log", false)
 end
 
 -- Prints and entire table into the console
-function log_table(tbl, prefix)
+function Log.table(tbl, prefix)
     prefix = prefix or ""
     for key, value in pairs(tbl) do
         log(prefix .. tostr(key) .. " = " .. tostr(value))
     end
 end
+
+return Log
 

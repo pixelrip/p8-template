@@ -1,8 +1,8 @@
-require("utils/log")
+local log = require("utils/log")
 
 -- Main entry point for the game
 function _init()
-    log("=== Game Started ===")
+    log.print("=== Game Started ===")
 
     -- Play music pattern from assets/music.p8
     music(0)
