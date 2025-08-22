@@ -1,4 +1,5 @@
-local log = require("utils/log")
+-- Globals
+require("utils/log")
 
 -- Main entry point for the game
 function _init()
